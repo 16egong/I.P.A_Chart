@@ -1,6 +1,5 @@
 import json
 
-
 def lambda_handler(event, context):
     # if (event['session']['application']['applicationId'] !=
     #         "amzn1.ask.skill.987654321"):
@@ -47,6 +46,7 @@ def on_launch(intent_request, session):
     return build_response(speechlet_response)
     
 def on_intent(intent_request, session):
+    
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
     
@@ -100,12 +100,61 @@ def phonetic_sound_intent(intent, session):
     return build_response(speechlet_response)
 
 def get_sound(place, manner):
-    if place == 'bilabial':
-        if manner == 'plosive':
-            url = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_bilabial_plosive.mp3'
-    if place == 'alveolar':
-        if manner == 'plosive':
-            url = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_alveolar_plosive.mp3'
+    url_chart = [[None for col in range(12)] for row in range(8)]
+    
+    places = {}
+    places['bilabial'] = 0
+    places['labiodental'] = 1
+    places['dental'] = 2
+    places['alveolar'] = 3
+    places['postalveolar'] = 4
+    places['retroflex'] = 5
+    places['palatal'] = 6
+    places['velar'] = 7
+    places['uvular'] = 8
+    places['pharyngeal'] = 9
+    places['glottal'] = 10
+    
+    manners = {}
+    manners['plosive'] = 0
+    manners['nasal'] = 1
+    manners['trill'] = 2
+    manners['tap'] = 3
+    manners['fricative'] = 4
+    manners['lateral fricative'] = 5
+    manners['approximant'] = 6
+    manners['lateral approximant'] = 7
+    
+    url_chart[0][0] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_bilabial_plosive.mp3'
+    url_chart[0][3] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_alveolar_plosive.mp3'
+    url_chart[0][5] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_retroflex_plosive.mp3'
+    url_chart[0][6] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_palatal_plosive.mp3'
+    url_chart[0][7] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_velar_plosive.mp3'
+    url_chart[0][8] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_uvular_plosive.mp3'
+    url_chart[0][10] = 'https://s3.amazonaws.com/ipa-chart-sounds/Glottal_stop.mp3'
+    
+    url_chart[1][0] = 'https://s3.amazonaws.com/ipa-chart-sounds/Bilabial_nasal.mp3'
+    url_chart[1][1] = 'https://s3.amazonaws.com/ipa-chart-sounds/Labiodental_nasal.mp3'
+    url_chart[1][3] = 'https://s3.amazonaws.com/ipa-chart-sounds/Alveolar_nasal.mp3'
+    url_chart[1][5] = 'https://s3.amazonaws.com/ipa-chart-sounds/Retroflex_nasal.mp3'
+    url_chart[1][6] = 'https://s3.amazonaws.com/ipa-chart-sounds/Palatal_nasal.mp3'
+    url_chart[1][7] = 'https://s3.amazonaws.com/ipa-chart-sounds/Velar_nasal.mp3'
+    url_chart[1][8] = 'https://s3.amazonaws.com/ipa-chart-sounds/Uvular_nasal.mp3'
+    url_chart[2][3] = 'https://s3.amazonaws.com/ipa-chart-sounds/Alveolar_trill.mp3'
+    url_chart[3][3] = 'https://s3.amazonaws.com/ipa-chart-sounds/Alveolar_lateral_flap.mp3'
+    url_chart[4][0] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_bilabial_fricative.mp3'
+    url_chart[4][1] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_labiodental_fricative.mp3'
+    url_chart[4][2] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_dental_fricative.mp3'
+    url_chart[4][3] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_alveolar_fricative.mp3'
+    url_chart[4][4] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_postalveolar_fricative.mp3'
+    url_chart[4][5] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_retroflex_fricative.mp3'
+    url_chart[4][6] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_palatal_fricative.mp3'
+    url_chart[4][7] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_velar_fricative.mp3'
+    url_chart[4][8] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_uvular_fricative.mp3'
+    url_chart[4][9] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_pharyngeal_fricative.mp3'
+    url_chart[4][10] = 'https://s3.amazonaws.com/ipa-chart-sounds/Voiced_glottal_fricative.mp3'
+    
+    return url_chart[places[place]][manners[manner]]
     return url
     
 # Built In Intents
